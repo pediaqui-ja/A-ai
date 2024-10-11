@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio do Felicidade</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Cardápio do Felicidade</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#cardapio">Cardápio</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="#carrinho">Carrinho</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="banner">
+        <h2>Levamos até você</h2>
+        <p>Entregas grátis para pedidos acima de R$60,00</p>
+    </div>
+
+    <div class="catalogo" id="cardapio">
+        <h2>Monte seu Pedido</h2>
+        <div class="produtos-lista">
+            <div class="produto-item">
+                <h3>Copo 500ml</h3>
+                <p>R$ 20,00</p>
+                <button onclick="montarPedido('Copo 500ml', 20)">Montar Pedido</button>
+            </div>
+            <div class="produto-item">
+                <h3>Marmitap</h3>
+                <p>R$ 35,00</p>
+                <button onclick="montarPedido('Marmitap', 35)">Montar Pedido</button>
+            </div>
+            <div class="produto-item">
+                <h3>Marmita G</h3>
+                <p>R$ 45,00</p>
+                <button onclick="montarPedido('Marmita G', 45)">Montar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="complementos" id="complementos" style="display: none;">
+        <h3>Escolha seus Acompanhamentos</h3>
+        <div>
+            <label><input type="checkbox" value="Frutas"> Frutas</label><br>
+            <label><input type="checkbox" value="Brownie ou Biscoito"> Brownie ou Biscoito</label><br>
+            <label><input type="checkbox" value="Creme de Chocolate Branco"> Creme de Chocolate Branco</label><br>
+            <label><input type="checkbox" value="Creme de Chocolate ao Leite"> Creme de Chocolate ao Leite</label><br>
+        </div>
+
+        <h3>Escolha seus Extras</h3>
+        <div>
+            <label><input type="checkbox" value="Nutella"> Nutella</label><br>
+            <label><input type="checkbox" value="Chantily"> Chantily</label><br>
+            <label><input type="checkbox" value="Chocolate Raspado"> Chocolate Raspado</label><br>
+        </div>
+
+        <button onclick="adicionarAoCarrinhoMontado()">Adicionar ao Carrinho</button>
+    </div>
+
+    <div class="contato" id="contato">
+        <h2>Contato</h2>
+        <p>Delivery: (27) 99959-5386</p>
+    </div>
+
+    <div class="carrinho" id="carrinho">
+        <h2>Carrinho</h2>
+        <p id="carrinho-vazio">Seu carrinho está vazio.</p>
+        <ul id="itens-carrinho"></ul>
+        <p id="total">Total: R$ 0,00</p>
+        <button onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+
+    <div class="formulario-entrega" id="formulario-entrega" style="display: none;">
+        <h2>Formulário de Entrega</h2>
+        <form id="form-entrega">
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" name="nome" required><br><br>
+
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro" required><br><br>
+
+            <label for="rua">Rua:</label>
+            <input type="text" id="rua" name="rua" required><br><br>
+
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" required><br><br>
+
+            <label for="referencia">Ponto de Referência:</label>
+            <input type="text" id="referencia" name="referencia"><br><br>
+
+            <h3>Forma de Pagamento</h3>
+            <input type="radio" id="pix" name="pagamento" value="Pix" checked>
+            <label for="pix">Pix</label><br>
+            
+            <input type="radio" id="dinheiro" name="pagamento" value="Dinheiro">
+            <label for="dinheiro">Dinheiro (Troco)</label><br>
+            
+            <input type="radio" id="cartao" name="pagamento" value="Cartão">
+            <label for="cartao">Cartão</label><br><br>
+
+            <div id="troco" style="display: none;">
+                <label for="valor-troco">Troco para:</label>
+                <input type="number" id="valor-troco" name="valor-troco"><br><br>
+            </div>
+
+            <button type="button" onclick="enviarPedido()">Enviar Pedido</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cardápio do Felicidade. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+    let carrinho = [];
+
+    function montarPedido(produto, preco) {
+        document.getElementById('complementos').style.display = 'block';
+        // Lógica para adicionar complementos pode ser adaptada aqui
+    }
+
+    function adicionarAoCarrinhoMontado() {
+        const frutas = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(el => el.value);
+        let acai = {
+            produto: 'Açaí Montado',
+            preco: 0,
+            complementos: frutas
+        };
+        carrinho.push(acai);
+        atualizarCarrinho();
+        document.getElementById('complementos').style.display = 'none';
+    }
+
+    function atualizarCarrinho() {
+        const lista = document.getElementById('itens-carrinho');
+        lista.innerHTML = '';
+        carrinho.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.produto} - ${item.complementos.join(', ')}`;
+            lista.appendChild(li);
+        });
+        document.getElementById('total').textContent = `Total: R$ ${calcularTotal().toFixed(2)}`;
+    }
+
+    function calcularTotal() {
+        return carrinho.reduce((acc, item) => acc + item.preco, 0);
+    }
+
+    function finalizarCompra() {
+        if (carrinho.length === 0) {
+            alert("Seu carrinho está vazio!");
+            return;
+        }
+
+        document.getElementById('formulario-entrega').style.display = 'block';
+    }
+
+    document.getElementById('dinheiro').addEventListener('change', function () {
+        document.getElementById('troco').style.display = 'block';
+    });
+
+    document.getElementById('pix').addEventListener('change', function () {
+        document.getElementById('troco').style.display = 'none';
+    });
+
+    document.getElementById('cartao').addEventListener('change', function () {
+        document.getElementById('troco').style.display = 'none';
+    });
+
+    function enviarPedido() {
+        const nome = document.getElementById('nome').value;
+        const bairro = document.getElementById('bairro').value;
+        const rua = document.getElementById('rua').value;
+        const numero = document.getElementById('numero').value;
+        const referencia = document.getElementById('referencia').value;
+        const pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+        const valorTroco = pagamento === 'Dinheiro' ? document.getElementById('valor-troco').value : '';
+
+        if (!nome || !bairro || !rua || !numero) {
+            alert("Por favor, preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        let mensagem = `*Pedido de Felicidade*%0A%0A`;
+        carrinho.forEach(item => {
+            mensagem += `${item.produto} - Complementos: ${item.complementos.join(', ')}%0A`;
+        });
+
+        const total = document.getElementById('total').textContent.split('R$ ')[1];
+        mensagem += `%0ATotal: R$ ${total}%0A`;
+        mensagem += `%0A*Dados de Entrega:%0ANome: ${nome}%0ABairro: ${bairro}%0ARua: ${rua}, Número: ${numero}%0AReferência: ${referencia}%0AForma de Pagamento: ${pagamento}`;
+
+        if (pagamento === 'Dinheiro') {
+            mensagem += `%0ATroco para: R$ ${valorTroco}`;
+        }
+
+        // Envia o pedido via WhatsApp
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=5527999595386&text=${mensagem}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    </script>
+</body>
+</html>
